@@ -20,3 +20,14 @@ class Redflags:
         return cls.redflags
 
 
+    @classmethod
+    def get_specific_redflag(cls, red_flag_id):
+        for redflag in cls.redflags:
+            if red_flag_id == redflag.red_flag_id:
+                return redflag
+        return None
+
+
+
+
+
