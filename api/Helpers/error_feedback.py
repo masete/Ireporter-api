@@ -20,7 +20,7 @@ class ErrorFeedback:
     @staticmethod
     def empty_data_fields():
         response_object = {
-            'status': 'fail',
+            'status': '400',
             'error_message': 'Some fields have no data',
             'data': False
         }
@@ -29,8 +29,17 @@ class ErrorFeedback:
     @staticmethod
     def empty_data_storage():
         response_object = {
-            'status': 'success',
-            'message': 'No orders currently',
+            'status': '200',
+            'message': 'No records currently',
             'data': False
         }
         return jsonify(response_object), 200
+
+    @staticmethod
+    def no_redflag():
+        response_object = {
+            'status': '404',
+            'error_message': 'redflag does not exist',
+            'data': False
+        }
+        return jsonify(response_object), 400

@@ -29,17 +29,30 @@ class RedflagViews(MethodView):
         }
         return jsonify(response_object), 201
 
-    def get(self, red_flag_id = None):
+    def get(self, red_flag_id=None):
         if not self.red.redflags:
             return ErrorFeedback.empty_data_storage()
         elif red_flag_id:
-            return self.get_single_order(red_flag_id)
+            return self.get_specific_redflag(red_flag_id)
 
         response_object = {
             'status': '200',
             'data': [redflag.__dict__ for redflag in self.red.get_all_redflags()]
         }
         return jsonify(response_object), 200
+
+    def get_specific_redflag(self, red_flag_id):
+        for redflag in self.red.get_all_redflags():
+            if redflag.red_flag_id == red_flag_id:
+                response_object = {
+                    'status': '200',
+                    'message': 'Order exists',
+                    'data': redflag.__dict__
+                }
+                return jsonify(response_object), 200
+
+        return ErrorFeedback.no_redflag()
+        
 
 
 
