@@ -52,7 +52,21 @@ class RedflagViews(MethodView):
                 return jsonify(response_object), 200
 
         return ErrorFeedback.no_redflag()
-        
+
+    def put(self, red_flag_id=None):
+        data = request.get_json()
+        self.red_flag_title = data['red_flag_title'].strip()
+        self.red_flag_comment = data['red_flag_comment'].strip()
+
+        if Redflags.update_order(red_flag_id, self.red_flag_title, self.red_flag_comment):
+            response_object = {
+                'status': '202',
+                'message': 'Status has been updated'
+            }
+            return jsonify(response_object), 202
+        return jsonify({"message" : "no record to edit"}), 200
+
+
 
 
 

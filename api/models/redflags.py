@@ -27,6 +27,16 @@ class Redflags:
                 return redflag
         return None
 
+    @classmethod
+    def update_order(cls, red_flag_id, red_flag_title=None, red_flag_comment=None):
+        record = cls.get_specific_redflag(red_flag_id)
+        if not record:
+            return False
+        record.red_flag_title = red_flag_title
+        record.red_flag_comment = red_flag_comment
+
+
+
 
 
 
