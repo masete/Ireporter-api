@@ -17,3 +17,6 @@ class Routes:
         """
         app.add_url_rule('/api/v1/redflag/', view_func=RedflagViews.as_view('create_redflag'),
                          methods=['POST'], strict_slashes=False)
+        app.add_url_rule('/api/v1/redflag/', view_func=RedflagViews.as_view('get_all_redflags'),
+                         methods=['GET'], strict_slashes=False)
+
