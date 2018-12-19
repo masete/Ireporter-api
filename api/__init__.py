@@ -6,7 +6,7 @@ from api.routes import Routes
 class Server:
 
     @staticmethod
-    def create_app(config = None):
+    def create_app(config=None):
         app = Flask(__name__)
         Routes.generate(app)
         return app
