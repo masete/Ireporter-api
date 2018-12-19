@@ -15,4 +15,8 @@ class Redflags:
 
         return redflag
 
+    @classmethod
+    def get_all_redflags(cls):
+        return cls.redflags
+
 

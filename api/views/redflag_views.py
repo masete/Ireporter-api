@@ -3,6 +3,7 @@ from flask.views import MethodView
 from api.models.redflags import Redflags
 from api.Helpers.error_feedback import ErrorFeedback
 
+
 class RedflagViews(MethodView):
     red = Redflags()
     createdBy = None
@@ -27,6 +28,21 @@ class RedflagViews(MethodView):
             'data': redflag_response.__dict__
         }
         return jsonify(response_object), 201
+
+    def get(self, red_flag_id = None):
+        if not self.red.redflags:
+            return ErrorFeedback.empty_data_storage()
+        elif red_flag_id:
+            return self.get_single_order(red_flag_id)
+
+        response_object = {
+            'status': '200',
+            'data': [redflag.__dict__ for redflag in self.red.get_all_redflags()]
+        }
+        return jsonify(response_object), 200
+
+
+
 
 
 

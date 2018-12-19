@@ -25,3 +25,12 @@ class ErrorFeedback:
             'data': False
         }
         return jsonify(response_object), 400
+
+    @staticmethod
+    def empty_data_storage():
+        response_object = {
+            'status': 'success',
+            'message': 'No orders currently',
+            'data': False
+        }
+        return jsonify(response_object), 200
