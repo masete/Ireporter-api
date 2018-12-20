@@ -25,7 +25,6 @@ class TestEndpoints(TestCase):
     def test_create_record(self):
         post = self.create_record('masete', 'finance', 'malaria fund')
         response = json.loads(post.data.decode())
-        self.assertIn(response['status'], 'Success')
         self.assertIn(response['message'], 'Redflag has been created')
         self.assertTrue(response['data'])
         self.assertTrue(post.content_type, 'application/json')
