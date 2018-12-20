@@ -11,7 +11,7 @@ omit =
     */__init__.py
     *__init__.py
     */api/routes.py
-*/api/validations/*
-*/api/models/*
-*/api/Helpers/*
-*api/config/*
+    */api/validations/*
+    */api/models/*
+    */api/Helpers/*
+    *api/config/*
