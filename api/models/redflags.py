@@ -1,4 +1,5 @@
 from api.models.const.redflag_model import RedflagModel
+from flask import jsonify
 from typing import List
 
 
@@ -34,6 +35,12 @@ class Redflags:
             return False
         record.red_flag_title = red_flag_title
         record.red_flag_comment = red_flag_comment
+        response_object = {
+            'status': '202',
+            'message': 'record has been updated'
+        }
+        return jsonify(response_object), 202
+
 
 
 
