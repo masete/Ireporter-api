@@ -43,3 +43,12 @@ class ErrorFeedback:
             'data': False
         }
         return jsonify(response_object), 400
+
+    @staticmethod
+    def missing_key(keys):
+        response_object = {
+
+            'Blank space': 'You have missing feilds '
+
+        }
+        return jsonify(response_object), 400

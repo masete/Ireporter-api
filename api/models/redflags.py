@@ -1,12 +1,11 @@
 from api.models.const.redflag_model import RedflagModel
 from flask import jsonify
-from typing import List
 
 
 class Redflags:
 
     index = 0
-    redflags : List[RedflagModel] = []
+    redflags = []
 
     def create_redflag(self, createdBy, red_flag_title, red_flag_comment):
         self.index += 1

@@ -53,18 +53,27 @@ class RedflagViews(MethodView):
 
         return ErrorFeedback.no_redflag()
 
+    def delete(self, red_flag_id):
+        for redflag in self.red.redflags:
+            if redflag['red_flag_id'] == red_flag_id:
+                self.red.redflags.remove(redflag)
+                return redflag
+            return jsonify({"message": "no redflag to delete"})
+
     def put(self, red_flag_id=None):
         data = request.get_json()
-        self.red_flag_title = data['red_flag_title'].strip()
-        self.red_flag_comment=data['red_flag_comment'].strip()
 
-        return Redflags.update_order(red_flag_id, self.red_flag_title, self.red_flag_comment)
-        # response_object = {
-        #     'status': '202',
-        #     'message': 'Status has been updated'
-        # }
-        #     return jsonify(response_object), 202
-        # return jsonify({"message" : "no record to edit"}), 200
+        key = 'red_flag_title'
+        if key not in data:
+            return ErrorFeedback.missing_key
+        try:
+            red_flag_title = data['red_flag_title'].strip()
+        except AttributeError:
+            return ErrorFeedback.invalid_data_format()
+        if not red_flag_title:
+            return ErrorFeedback.empty_data_fields()
+
+        return jsonify({'redflag': self.red.update_order(red_flag_title)}), 200
 
 
 
