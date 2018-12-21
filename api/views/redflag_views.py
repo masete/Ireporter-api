@@ -72,11 +72,28 @@ class RedflagViews(MethodView):
 
         self.red_flag_comment = data['red_flag_comment'].strip()
 
-        single_record = [record.__dict__ for record in self.red.redflags if record.__dict__['red_flag_id'] == red_flag_id]
+        single_record = [record.__dict__ for record in self.red.redflags if record.__dict__['red_flag_id'] ==
+                         red_flag_id]
         if not single_record:
             return jsonify({"message": "no record"})
         single_record[0]['red_flag_comment'] = data['red_flag_comment']
-        return jsonify({"status": "200", "data": [{"edited redflag comment": single_record, "message": "redflag record has been edited"}]})
+        return jsonify({"status": "200", "data": [{"edited redflag comment": single_record, "message":
+            "redflag record has been edited"}]})
+
+    def put(self, red_flag_id):
+        data = request.get_json()
+
+        key = 'red_flag_location'
+        if key not in data:
+            return ErrorFeedback.missing_key
+
+        self.red_flag_location = data['red_flag_location'].strip()
+
+        single_record = [record.__dict__ for record in self.red.redflags if record.__dict__['red_flag_id'] == red_flag_id]
+        if not single_record:
+            return jsonify({"message": "no record to edit"})
+        single_record[0]['red_flag_location'] = data['red_flag_location']
+        return jsonify({"status": "200", "data": [{"edited redflag location": single_record, "message": "redflag location has been edited"}]})
 
 
 
