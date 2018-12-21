@@ -49,5 +49,42 @@ class TestEndpoints(TestCase):
         self.assertTrue(post.content_type, 'application/json')
         self.assertEqual(post.status_code, 400)
 
+    def test_get_orders(self):
+        self.create_record('books', 'okay', 4567, 'zero no corruption')
+        self.create_record('maj.masete', 'UPDF', 6758, 'stolen guns')
+
+        request_data = self.client().get('/api/v1/redflags/')
+
+        response_data = json.loads(request_data.data.decode())
+        self.assertTrue(response_data['status'], '200')
+        self.assertTrue(response_data['data'])
+        self.assertEqual(request_data.status_code, 200)
+
+    def test_get_redflag_that_exists(self):
+        self.create_record('books', 'okay', 4567, 'zero no corruption')
+        self.create_record('maj.masete', 'UPDF', 6758, 'stolen guns')
+
+        request_data = self.client().get('/api/v1/redflags/2/')
+
+        response_data = json.loads(request_data.data.decode())
+        self.assertIn(response_data['status'], '200')
+        self.assertTrue(response_data['message'], 'redflag exists')
+        self.assertTrue(response_data['data'])
+        self.assertEqual(request_data.status_code, 200)
+
+    def test_get_redflag_not_existing(self):
+        self.create_record('books', 'okay', 4567, 'zero no corruption')
+        self.create_record('maj.masete', 'UPDF', 6758, 'stolen guns')
+
+        request_data = self.client().get('/api/v1/redflags/1008/')
+
+        response_data = json.loads(request_data.data.decode())
+        self.assertIn(response_data['status'], '404')
+        self.assertIn(response_data['error_message'], 'redflag does not exist')
+        self.assertFalse(response_data['data'])
+        self.assertEqual(request_data.status_code, 400)
+
+
+
 
 
