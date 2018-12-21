@@ -55,7 +55,7 @@ class RedflagViews(MethodView):
             if redflag.red_flag_id == red_flag_id:
                 response_object = {
                     'status': '200',
-                    'message': 'Order exists',
+                    'message': 'redflag exists',
                     'data': redflag.__dict__
                 }
                 return jsonify(response_object), 200
