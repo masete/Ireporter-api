@@ -8,4 +8,6 @@ script:
   - pytest --cov
   - coverage
   - coverage3 report
+  - coveralls
 after_success:
+  - coveralls
