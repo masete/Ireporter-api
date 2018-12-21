@@ -19,7 +19,6 @@ class Redflags:
     def get_all_redflags(cls):
         return cls.redflags
 
-
     @classmethod
     def get_specific_redflag(cls, red_flag_id):
         for redflag in cls.redflags:
@@ -28,17 +27,8 @@ class Redflags:
         return None
 
     @classmethod
-    def update_order(cls, red_flag_id, red_flag_title=None, red_flag_comment=None):
-        record = cls.get_specific_redflag(red_flag_id)
-        if not record:
-            return False
-        record.red_flag_title = red_flag_title
-        record.red_flag_comment = red_flag_comment
-        response_object = {
-            'status': '202',
-            'message': 'record has been updated'
-        }
-        return jsonify(response_object), 202
+    def update_record(cls, red_flag_id, red_flag_comment=None):
+        single_record = [record for record in cls.redflags if record.red_flag_id == red_flag_id]
 
 
 
