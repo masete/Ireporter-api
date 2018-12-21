@@ -13,13 +13,20 @@ class RedflagViews(MethodView):
 
     def post(self):
         data = request.get_json()
-        try:
-            self.createdBy = data["createdBy"].strip()
-            self.red_flag_title = data["red_flag_title"].strip()
-            self.red_flag_location = data['red_flag_location'].strip()
-            self.red_flag_comment = data["red_flag_comment"].strip()
-        except AttributeError:
-            return ErrorFeedback.invalid_data_format()
+
+        keys = ("createdBy", "red_flag_title", "red_flag_location", "red_flag_comment")
+        if not set(keys).issubset(set(request.json)):
+            return ErrorFeedback.missing_key(keys)
+
+        if not isinstance(request.json['red_flag_location'], int):
+            return ErrorFeedback.invalid_data_type()
+
+
+        self.createdBy = data["createdBy"].strip()
+        self.red_flag_title = data["red_flag_title"].strip()
+        self.red_flag_location = data['red_flag_location']
+        self.red_flag_comment = data["red_flag_comment"].strip()
+
         if not self.createdBy or not self.red_flag_title or not self.red_flag_comment:
             return ErrorFeedback.empty_data_fields()
 
@@ -93,7 +100,8 @@ class RedflagViews(MethodView):
         if not single_record:
             return jsonify({"message": "no record to edit"})
         single_record[0]['red_flag_location'] = data['red_flag_location']
-        return jsonify({"status": "200", "data": [{"edited redflag location": single_record, "message": "redflag location has been edited"}]})
+        return jsonify({"status": "200", "data": [{"edited redflag location": single_record, "message":
+            "redflag location has been edited"}]})
 
 
 
