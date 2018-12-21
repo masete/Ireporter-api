@@ -11,16 +11,16 @@ class Routes:
     @staticmethod
     def generate(app):
 
-        app.add_url_rule('/api/v1/redflag/', view_func=RedflagViews.as_view('create_redflag'),
+        app.add_url_rule('/api/v1/redflags/', view_func=RedflagViews.as_view('create_redflag'),
                          methods=['POST'], strict_slashes=False)
-        app.add_url_rule('/api/v1/redflag/', view_func=RedflagViews.as_view('get_all_redflags'),
+        app.add_url_rule('/api/v1/redflags/', view_func=RedflagViews.as_view('get_all_redflags'),
                          methods=['GET'], strict_slashes=False)
-        app.add_url_rule('/api/v1/redflag/<int:red_flag_id>', view_func=RedflagViews.as_view('get_all_specific_redflag'),
+        app.add_url_rule('/api/v1/redflags/<int:red_flag_id>', view_func=RedflagViews.as_view('get_all_specific_redflag'),
                          methods=['GET'], strict_slashes=False)
-        app.add_url_rule('/api/v1/redflag/<int:red_flag_id>',
+        app.add_url_rule('/api/v1/redflags/<int:red_flag_id>',
                          view_func=RedflagViews.as_view('edit_redflag'),
                          methods=['PUT'], strict_slashes=False)
-        app.add_url_rule('/api/v1/redflag/<int:red_flag_id>',
+        app.add_url_rule('/api/v1/redflags/<int:red_flag_id>',
                          view_func=RedflagViews.as_view('delete_redflag'),
                          methods=['DELETE'], strict_slashes=False)
 
