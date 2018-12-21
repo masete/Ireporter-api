@@ -8,6 +8,7 @@ class RedflagViews(MethodView):
     red = Redflags()
     createdBy = None
     red_flag_title = None
+    red_flag_location = None
     red_flag_comment = None
 
     def post(self):
@@ -15,13 +16,14 @@ class RedflagViews(MethodView):
         try:
             self.createdBy = data["createdBy"].strip()
             self.red_flag_title = data["red_flag_title"].strip()
+            self.red_flag_location = data['red_flag_location'].strip()
             self.red_flag_comment = data["red_flag_comment"].strip()
         except AttributeError:
             return ErrorFeedback.invalid_data_format()
         if not self.createdBy or not self.red_flag_title or not self.red_flag_comment:
             return ErrorFeedback.empty_data_fields()
 
-        redflag_response = self.red.create_redflag(self.createdBy, self.red_flag_title, self.red_flag_comment)
+        redflag_response = self.red.create_redflag(self.createdBy, self.red_flag_title, self.red_flag_location, self.red_flag_comment)
         response_object = {
             'status': '201',
             'message': 'Redflag has been created',
