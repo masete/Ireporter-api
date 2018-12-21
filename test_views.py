@@ -30,10 +30,10 @@ class TestEndpoints(TestCase):
         self.assertTrue(post.content_type, 'application/json')
         self.assertEqual(post.status_code, 201)
 
-    def test_get_all_records(self):
-        data = self.create_record('refugees', 'PMO', 'people have no food')
-        request_data = self.client().get('/api/v1/redflags', data)
-
-        response_data = json.loads(request_data.data.decode())
-        self.assertIn(response_data['status'], '200')
-        self.assertEqual(request_data.status_code, 200)
+    # def test_get_all_records(self):
+    #     data = self.create_record('refugees', 'PMO', 'people have no food')
+    #     request_data = self.client().get('/api/v1/redflags', data)
+    #
+    #     response_data = json.loads(request_data.data.decode())
+    #     self.assertIn(response_data['status'], '200')
+    #     self.assertEqual(request_data.status_code, 200)
