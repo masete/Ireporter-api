@@ -24,17 +24,30 @@ class TestEndpoints(TestCase):
         return post_data
 
     def test_create_record(self):
-        post = self.create_record('masete', 'finance', '456 789', 'malaria fund')
+        post = self.create_record('masete', 'finance', 456789, 'malaria fund')
         response = json.loads(post.data.decode())
         self.assertIn(response['message'], 'Redflag has been created')
         self.assertTrue(response['data'])
         self.assertTrue(post.content_type, 'application/json')
         self.assertEqual(post.status_code, 201)
 
-    # def test_get_all_records(self):
-    #     data = self.create_record('refugees', 'PMO', 'people have no food')
-    #     request_data = self.client().get('/api/v1/redflags', data)
-    #
-    #     response_data = json.loads(request_data.data.decode())
-    #     self.assertIn(response_data['status'], '200')
-    #     self.assertEqual(request_data.status_code, 200)
+    def test_empty_fields(self):
+        post = self.create_record('', 'education', 78979, 'no corruption')
+        post_response = json.loads(post.data.decode())
+        self.assertTrue(post_response['status'], '400')
+        self.assertTrue(post_response['error_message'], 'You have missing feilds ')
+        self.assertFalse(post_response['data'])
+        self.assertTrue(post.content_type, 'application/json')
+        self.assertEqual(post.status_code, 400)
+
+    def test_record_with_invalid_data(self):
+        post = self.create_record('university', 'education', 'masindi', 'no corruption')
+        post_response = json.loads(post.data.decode())
+        self.assertTrue(post_response['status'], '400')
+        self.assertTrue(post_response['error_message'], 'Please an integer is needed here')
+        self.assertFalse(post_response['data'])
+        self.assertTrue(post.content_type, 'application/json')
+        self.assertEqual(post.status_code, 400)
+
+
+

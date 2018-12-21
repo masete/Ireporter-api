@@ -11,8 +11,17 @@ class ErrorFeedback:
     @staticmethod
     def invalid_data_format():
         response_object = {
-            'status': 'fail',
+            'status': '400',
             'error_message': 'Please use character strings',
+            'data': False
+        }
+        return jsonify(response_object), 400
+
+    @staticmethod
+    def invalid_data_type():
+        response_object = {
+            'status': '400',
+            'error_message': 'Please an integer is needed here',
             'data': False
         }
         return jsonify(response_object), 400
