@@ -21,6 +21,9 @@ class Routes:
                          view_func=RedflagViews.as_view('edit_redflag'),
                          methods=['PUT'], strict_slashes=False)
         app.add_url_rule('/api/v1/redflags/<int:red_flag_id>',
+                         view_func=RedflagViews.as_view('edit_redflag_location'),
+                         methods=['PUT'], strict_slashes=False)
+        app.add_url_rule('/api/v1/redflags/<int:red_flag_id>',
                          view_func=RedflagViews.as_view('delete_redflag'),
                          methods=['DELETE'], strict_slashes=False)
 

@@ -8,6 +8,7 @@ class RedflagViews(MethodView):
     red = Redflags()
     createdBy = None
     red_flag_title = None
+    red_flag_location = None
     red_flag_comment = None
 
     def post(self):
@@ -15,13 +16,14 @@ class RedflagViews(MethodView):
         try:
             self.createdBy = data["createdBy"].strip()
             self.red_flag_title = data["red_flag_title"].strip()
+            self.red_flag_location = data['red_flag_location'].strip()
             self.red_flag_comment = data["red_flag_comment"].strip()
         except AttributeError:
             return ErrorFeedback.invalid_data_format()
         if not self.createdBy or not self.red_flag_title or not self.red_flag_comment:
             return ErrorFeedback.empty_data_fields()
 
-        redflag_response = self.red.create_redflag(self.createdBy, self.red_flag_title, self.red_flag_comment)
+        redflag_response = self.red.create_redflag(self.createdBy, self.red_flag_title, self.red_flag_location, self.red_flag_comment)
         response_object = {
             'status': '201',
             'message': 'Redflag has been created',
@@ -70,11 +72,28 @@ class RedflagViews(MethodView):
 
         self.red_flag_comment = data['red_flag_comment'].strip()
 
-        single_record = [record.__dict__ for record in self.red.redflags if record.__dict__['red_flag_id'] == red_flag_id]
+        single_record = [record.__dict__ for record in self.red.redflags if record.__dict__['red_flag_id'] ==
+                         red_flag_id]
         if not single_record:
             return jsonify({"message": "no record"})
         single_record[0]['red_flag_comment'] = data['red_flag_comment']
-        return jsonify({"status": "200", "data": [{"edited redflag comment": single_record, "message": "redflag record has been edited"}]})
+        return jsonify({"status": "200", "data": [{"edited redflag comment": single_record, "message":
+            "redflag record has been edited"}]})
+
+    def put(self, red_flag_id):
+        data = request.get_json()
+
+        key = 'red_flag_location'
+        if key not in data:
+            return ErrorFeedback.missing_key
+
+        self.red_flag_location = data['red_flag_location'].strip()
+
+        single_record = [record.__dict__ for record in self.red.redflags if record.__dict__['red_flag_id'] == red_flag_id]
+        if not single_record:
+            return jsonify({"message": "no record to edit"})
+        single_record[0]['red_flag_location'] = data['red_flag_location']
+        return jsonify({"status": "200", "data": [{"edited redflag location": single_record, "message": "redflag location has been edited"}]})
 
 
 

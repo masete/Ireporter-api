@@ -10,12 +10,13 @@ class TestEndpoints(TestCase):
         self.app = APP
         self.client = self.app.test_client
 
-    def create_record(self, createdBy, red_flag_title, red_flag_comment):
+    def create_record(self, createdBy, red_flag_title, red_flag_location, red_flag_comment):
         post_data = self.client().post(
             '/api/v1/redflags/',
             data=json.dumps(dict(
                 createdBy=createdBy,
                 red_flag_title=red_flag_title,
+                red_flag_location=red_flag_location,
                 red_flag_comment=red_flag_comment
             )),
             content_type='application/json'
@@ -23,7 +24,7 @@ class TestEndpoints(TestCase):
         return post_data
 
     def test_create_record(self):
-        post = self.create_record('masete', 'finance', 'malaria fund')
+        post = self.create_record('masete', 'finance', '456 789', 'malaria fund')
         response = json.loads(post.data.decode())
         self.assertIn(response['message'], 'Redflag has been created')
         self.assertTrue(response['data'])
