@@ -49,7 +49,7 @@ class TestEndpoints(TestCase):
         self.assertTrue(post.content_type, 'application/json')
         self.assertEqual(post.status_code, 400)
 
-    def test_get_orders(self):
+    def test_get_redflags(self):
         self.create_record('books', 'okay', 4567, 'zero no corruption')
         self.create_record('maj.masete', 'UPDF', 6758, 'stolen guns')
 
@@ -83,6 +83,24 @@ class TestEndpoints(TestCase):
         self.assertIn(response_data['error_message'], 'redflag does not exist')
         self.assertFalse(response_data['data'])
         self.assertEqual(request_data.status_code, 400)
+
+
+    def test_edit_comment_absent(self):
+        self.create_record('books', 'okay', 4567, 'zero no corruption')
+        self.create_record('maj.masete', 'UPDF', 6758, 'stolen guns')
+
+        request_data = self.client().put(
+            '/api/v1/redflags/30/',
+            data=json.dumps(dict(
+                type="all corruption",
+                payload="red_flag_comment"
+            )),
+            content_type='application/json'
+        )
+        response_data = json.loads(request_data.data.decode())
+        self.assertIn(response_data['message'], 'no record')
+        self.assertEqual(request_data.status_code, 400)
+
 
 
 
