@@ -27,6 +27,15 @@ class ErrorFeedback:
         return jsonify(response_object), 400
 
     @staticmethod
+    def invalid_data_type_str():
+        response_object = {
+            'status': '400',
+            'error_message': 'Please a string is for redflag title and comment thanks',
+            'data': False
+        }
+        return jsonify(response_object), 400
+
+    @staticmethod
     def empty_data_fields():
         response_object = {
             'status': '400',
@@ -58,6 +67,8 @@ class ErrorFeedback:
         response_object = {
 
             'Blank space': 'You have missing feilds '
+                           'check if you have createdby, title, location and comment',
+            'status': '200'
 
         }
         return jsonify(response_object), 400

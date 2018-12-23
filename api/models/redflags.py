@@ -15,20 +15,18 @@ class Redflags:
 
         return redflag
 
-    @classmethod
+    # @classmethod
     def get_all_redflags(cls):
         return cls.redflags
 
-    @classmethod
+    # @classmethod
     def get_specific_redflag(cls, red_flag_id):
         for redflag in cls.redflags:
             if red_flag_id == redflag.red_flag_id:
                 return redflag
         return None
 
-    @classmethod
-    def update_record(cls, red_flag_id, red_flag_comment=None):
-        single_record = [record for record in cls.redflags if record.red_flag_id == red_flag_id]
+
 
 
 
