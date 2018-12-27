@@ -19,14 +19,19 @@ class RedflagViews(MethodView):
         if not set(keys).issubset(set(request.json)):
             return ErrorFeedback.missing_key(keys)
 
+        self.createdBy = data["createdBy"].strip()
+        self.red_flag_title = data["red_flag_title"]
+        self.red_flag_location = data['red_flag_location']
+        self.red_flag_comment = data['red_flag_comment']
+
         if not isinstance(request.json['red_flag_location'], int):
             return ErrorFeedback.invalid_data_type()
 
+        if not isinstance(request.json['red_flag_title'], str):
+            return ErrorFeedback.invalid_data_type_str()
 
-        self.createdBy = data["createdBy"].strip()
-        self.red_flag_title = data["red_flag_title"].strip()
-        self.red_flag_location = data['red_flag_location']
-        self.red_flag_comment = data["red_flag_comment"].strip()
+        if not isinstance(request.json['red_flag_comment'], str):
+            return ErrorFeedback.invalid_data_type_str()
 
         if not self.createdBy or not self.red_flag_title or not self.red_flag_comment:
             return ErrorFeedback.empty_data_fields()
@@ -68,8 +73,8 @@ class RedflagViews(MethodView):
             if redflag.red_flag_id == red_flag_id:
                 self.red.redflags.remove(redflag)
                 return jsonify({"status": 200, "data": [{"id": red_flag_id, "message": "redflag record has been deleted"
-                                                        }]})
-        return jsonify({"message": "no redflag to delete"})
+                                                        }]}), 200
+        return jsonify({"message": "no redflag to delete"}), 400
 
     def put(self, red_flag_id):
         data = request.get_json()
@@ -77,7 +82,7 @@ class RedflagViews(MethodView):
         if ('type' not in data) and ('payload' not in data):
             return ErrorFeedback.missing_key
 
-        self.red_flag_type = data['payload'].strip()
+        self.red_flag_type = data['payload']
         single_record = [record.__dict__ for record in self.red.redflags if record.__dict__['red_flag_id'] == red_flag_id]
 
         if not single_record:
