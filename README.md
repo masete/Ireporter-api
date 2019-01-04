@@ -4,3 +4,66 @@ non persistent
 # Badges
 
 [![Build Status](https://travis-ci.org/masete/Ireporter-api.svg?branch=feature)](https://travis-ci.org/masete/Ireporter-api)  [![Maintainability](https://api.codeclimate.com/v1/badges/145fb1609a0dd36ba71a/maintainability)](https://codeclimate.com/github/masete/Ireporter-api/maintainability)   [![Coverage Status](https://coveralls.io/repos/github/masete/Ireporter-api/badge.svg?branch=feature)](https://coveralls.io/github/masete/Ireporter-api?branch=feature)
+
+
+
+## API Endpoints
+
+| REQUEST | ROUTE | FUNCTIONALITY |
+| ------- | ----- | ------------- |
+| GET | /api/v1/redflag |Fetch all redflags|
+| GET | api/v1/redflags/&lt;red_flag_id&gt; | Fetch a specific redflag |
+| GET | api/v1/users | Fetches all users |
+| GET | api/v1/users/&lt;user_id&gt; |parcel | Fetch all parcel delivery orders by a specific user |
+| POST | /api/redflag/| Create a redflag|
+| PUT | /api/v1/redflag_location | Edit redflag location |
+| DELETE | /api/v1/redflag | Deletes a redflag |
+| PUT | /api/v1/redflag_comment | Edit redflag comment |
+| PUT | /api/v1/redflag/&lt;red_flag_id&gt; /cancel | Cancel redflag |
+
+**Getting started with the app**
+
+**Modules and tools used to build the endpoints**
+
+* [Python 3.6](https://docs.python.org/3/)
+
+* [Flask](http://flask.pocoo.org/)
+
+
+## Installation
+
+Create a new directory and initialize git in it. Clone this repository by running
+```sh
+$ git clone URL   which in this case is https://github.com/masete/ireporter-api.git
+```
+Create a virtual environment. For example, with virtualenv, create a virtual environment named venv using
+```sh
+$ virtualenv venv
+```
+Activate the virtual environment
+```sh
+$ cd venv/scripts/activate
+```
+Install the dependencies in the requirements.txt file using pip
+```sh
+
+$ pip install -r requirements.txt
+```
+Populate the requirements.txt using
+
+$ pip freeze  >  requirements.txt
+```sh
+Start the application by running
+```
+$ python run.py
+```sh
+
+ 
+The APP is hosted on heroku, checkout this Link: https://ireporter-a.herokuapp.com/
+
+## Author
+Masete Nicholas @masete
+
+
+Hope you had a nice ride
+
