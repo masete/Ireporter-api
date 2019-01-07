@@ -13,13 +13,11 @@ non persistent
 | ------- | ----- | ------------- |
 | GET | /api/v1/redflag |Fetch all redflags|
 | GET | api/v1/redflags/&lt;red_flag_id&gt; | Fetch a specific redflag |
-| GET | api/v1/users | Fetches all users |
-| GET | api/v1/users/&lt;user_id&gt; |parcel | Fetch all parcel delivery orders by a specific user |
 | POST | /api/redflag/| Create a redflag|
 | PUT | /api/v1/redflag_location | Edit redflag location |
 | DELETE | /api/v1/redflag | Deletes a redflag |
 | PUT | /api/v1/redflag_comment | Edit redflag comment |
-| PUT | /api/v1/redflag/&lt;red_flag_id&gt; /cancel | Cancel redflag |
+
 
 **Getting started with the app**
 
