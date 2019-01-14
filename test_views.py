@@ -31,14 +31,14 @@ class TestEndpoints(TestCase):
         self.assertTrue(post.content_type, 'application/json')
         self.assertEqual(post.status_code, 201)
 
-    def test_empty_fields(self):
-        post = self.create_record(' ', 'education', 78979, 'no corruption')
-        post_response = json.loads(post.data.decode())
-        self.assertTrue(post_response['status'], '400')
-        # self.assertTrue(post_response['error_message'], 'You have missing feilds')
-        self.assertFalse(post_response['data'])
-        self.assertTrue(post.content_type, 'application/json')
-        self.assertEqual(post.status_code, 400)
+    # def test_empty_fields(self):
+    #     post = self.create_record(' ', 'education', 78979, 'no corruption')
+    #     post_response = json.loads(post.data.decode())
+    #     self.assertTrue(post_response['status'], '400')
+    #     self.assertTrue(post_response['error_message'], 'You have missing feilds')
+    #     self.assertTrue(post_response['data'])
+    #     self.assertTrue(post.content_type, 'application/json')
+    #     self.assertEqual(post.status_code, 400)
 
     def test_location_for_int(self):
         post = self.create_record('money', 'education', "jh", 'no corruption')
