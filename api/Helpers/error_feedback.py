@@ -66,8 +66,7 @@ class ErrorFeedback:
     def missing_key(keys):
         response_object = {
 
-            'Blank space': 'You have missing feilds '
-                           'check if you have createdby, title, location and comment',
+            'error_message': 'You have missing feilds check if you have createdby, title, location and comment',
             'status': '200'
 
         }
