@@ -6,41 +6,47 @@ from api.Helpers.error_feedback import ErrorFeedback
 
 class RedflagViews(MethodView):
     red = Redflags()
-    createdBy = None
-    red_flag_title = None
-    red_flag_location = None
-    red_flag_comment = None
-    red_flag_type = None
+    created_by = None
+    flag_title = None
+    flag_location = None
+    flag_comment = None
+    flag_type = None
 
     def post(self):
         data = request.get_json()
 
-        keys = ("createdBy", "red_flag_title", "red_flag_location", "red_flag_comment")
+        keys = ("created_by", "flag_title", "flag_location", "flag_comment")
         if not set(keys).issubset(set(request.json)):
             return ErrorFeedback.missing_key(keys)
 
-        self.createdBy = data["createdBy"].strip()
-        self.red_flag_title = data["red_flag_title"]
-        self.red_flag_location = data['red_flag_location']
-        self.red_flag_comment = data['red_flag_comment']
+        self.created_by = data["created_by"]
+        self.flag_title = data["flag_title"]
+        self.flag_location = data['flag_location']
+        self.flag_comment = data['flag_comment']
 
-        if not isinstance(request.json['red_flag_location'], int):
+        if not isinstance(request.json['flag_location'], int):
             return ErrorFeedback.invalid_data_type()
 
-        if not isinstance(request.json['red_flag_title'], str):
+        if not isinstance(request.json['flag_title'], str):
             return ErrorFeedback.invalid_data_type_str()
 
-        if not isinstance(request.json['red_flag_comment'], str):
+        if not isinstance(request.json['flag_comment'], str):
             return ErrorFeedback.invalid_data_type_str()
 
-        if not self.createdBy or not self.red_flag_title or not self.red_flag_comment:
+        if not self.created_by or not self.flag_title or not self.flag_comment:
             return ErrorFeedback.empty_data_fields()
 
-        redflag_response = self.red.create_redflag(self.createdBy, self.red_flag_title, self.red_flag_location, self.red_flag_comment)
+        for flag in self.red.redflags:
+            if self.flag_comment in flag.flag_comment:
+                return jsonify({"message": "record already exits please post a new redflag with "
+                                           "completely different flag comment from the existing"}), 400
+
+        flag_response = self.red.create_redflag(self.created_by, self.flag_title, self.flag_location,
+                                                self.flag_comment)
         response_object = {
             'status': '201',
             'message': 'Redflag has been created',
-            'data': redflag_response.__dict__
+            'data': flag_response.__dict__
         }
         return jsonify(response_object), 201
 
@@ -52,17 +58,17 @@ class RedflagViews(MethodView):
 
         response_object = {
             'status': '200',
-            'data': [redflag.__dict__ for redflag in self.red.get_all_redflags()]
+            'data': [flag.__dict__ for flag in self.red.get_all_redflags()]
         }
         return jsonify(response_object), 200
 
     def get_specific_redflag(self, red_flag_id):
-        for redflag in self.red.get_all_redflags():
-            if redflag.red_flag_id == red_flag_id:
+        for flag in self.red.get_all_redflags():
+            if flag.red_flag_id == red_flag_id:
                 response_object = {
                     'status': '200',
-                    'message': 'redflag exists',
-                    'data': redflag.__dict__
+                    'message': 'red flag exists',
+                    'data': flag.__dict__
                 }
                 return jsonify(response_object), 200
 
@@ -83,12 +89,14 @@ class RedflagViews(MethodView):
             return ErrorFeedback.missing_key
 
         self.red_flag_type = data['payload']
-        single_record = [record.__dict__ for record in self.red.redflags if record.__dict__['red_flag_id'] == red_flag_id]
+        single_record = [record.__dict__ for record in self.red.redflags if record.__dict__['red_flag_id']
+                         == red_flag_id]
 
         if not single_record:
             return jsonify({"message": "no record"}), 400
         single_record[0][data['type']] = data['payload']
-        return jsonify({"status": "200", "data": [{"edited redflag": single_record, "message": "redflag record has been edited"}]})
+        return jsonify({"status": "200", "data": [{"edited redflag": single_record, "message":
+                       "red flag record has been edited"}]})
 
 
 

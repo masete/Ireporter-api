@@ -21,7 +21,7 @@ class ErrorFeedback:
     def invalid_data_type():
         response_object = {
             'status': '400',
-            'error_message': 'Please an integer is needed here',
+            'error': 'Please an integer is needed here',
             'data': False
         }
         return jsonify(response_object), 400
@@ -66,8 +66,7 @@ class ErrorFeedback:
     def missing_key(keys):
         response_object = {
 
-            'Blank space': 'You have missing feilds '
-                           'check if you have createdby, title, location and comment',
+            'error_message': 'You have missing feilds check if you have createdby, title, location and comment',
             'status': '200'
 
         }
