@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from flask.views import MethodView
 from api.models.user_models import UserAuth
-from api.Helpers.validators import validate_user_details, validate_space
+from api.Helpers.validators import validate_user_details
 
 
 class UserView(MethodView):
@@ -23,10 +23,10 @@ class UserView(MethodView):
                                     is_admin)
         if val:
             return val
-        space = validate_space(first_name, last_name, other_name, user_name, email, phone_number, password,
-                               is_admin)
-        if space:
-            return space
+        # space = validate_space(first_name, last_name, other_name, user_name, email, phone_number, password,
+        #                        is_admin)
+        # if space:
+        #     return space
 
         user = UserAuth(first_name=first_name, last_name=last_name, other_names=other_name, user_name=user_name,
                         email=email, phone_number=phone_number, is_admin=is_admin, password=password)
