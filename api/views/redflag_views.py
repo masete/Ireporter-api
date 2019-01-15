@@ -24,9 +24,6 @@ class RedflagViews(MethodView):
         self.flag_location = data['flag_location']
         self.flag_comment = data['flag_comment']
 
-        if self.flag_comment == self.red.redflags:
-            return jsonify({"message": "record already exits"})
-
         if not isinstance(request.json['flag_location'], int):
             return ErrorFeedback.invalid_data_type()
 
@@ -39,8 +36,13 @@ class RedflagViews(MethodView):
         if not self.created_by or not self.flag_title or not self.flag_comment:
             return ErrorFeedback.empty_data_fields()
 
+        for flag in self.red.redflags:
+            if self.flag_comment in flag.flag_comment:
+                return jsonify({"message": "record already exits please post a new redflag with "
+                                           "completely different flag comment from the existing"}), 400
+
         flag_response = self.red.create_redflag(self.created_by, self.flag_title, self.flag_location,
-                                                   self.flag_comment)
+                                                self.flag_comment)
         response_object = {
             'status': '201',
             'message': 'Redflag has been created',

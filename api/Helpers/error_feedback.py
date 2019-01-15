@@ -21,7 +21,7 @@ class ErrorFeedback:
     def invalid_data_type():
         response_object = {
             'status': '400',
-            'error_message': 'Please an integer is needed here',
+            'error': 'Please an integer is needed here',
             'data': False
         }
         return jsonify(response_object), 400

@@ -31,6 +31,15 @@ class TestEndpoints(TestCase):
         self.assertTrue(post.content_type, 'application/json')
         self.assertEqual(post.status_code, 201)
 
+    def test_create_record_existing(self):
+        post = self.create_record('masete', 'finance', 456789, 'malaria fund')
+        post1 = self.create_record('masete', 'finance', 456789, 'malaria fund')
+        response1 = json.loads(post1.data.decode())
+        self.assertIn(response1['message'], 'record already exits please post a new redflag with '
+                                            'completely different flag comment from the existing')
+        self.assertTrue(post.content_type, 'application/json')
+        self.assertEqual(post.status_code, 400)
+
     # def test_empty_fields(self):
     #     post = self.create_record(' ', 'education', 78979, 'no corruption')
     #     post_response = json.loads(post.data.decode())
@@ -44,7 +53,7 @@ class TestEndpoints(TestCase):
         post = self.create_record('money', 'education', "jh", 'no corruption')
         post_response = json.loads(post.data.decode())
         self.assertEqual(post_response['status'], '400')
-        self.assertTrue(post_response['error_message'], 'Please an integer is needed here')
+        self.assertTrue(post_response['error'], 'Please an integer is needed here')
         self.assertFalse(post_response['data'])
         self.assertTrue(post.content_type, 'application/json')
         self.assertEqual(post.status_code, 400)
@@ -63,15 +72,6 @@ class TestEndpoints(TestCase):
         post_response = json.loads(post.data.decode())
         self.assertEqual(post_response['status'], '400')
         self.assertEqual(post_response['error_message'], 'Please a string is for redflag title and comment thanks')
-        self.assertFalse(post_response['data'])
-        self.assertTrue(post.content_type, 'application/json')
-        self.assertEqual(post.status_code, 400)
-
-    def test_record_with_invalid_data(self):
-        post = self.create_record('university', 'education', 'masindi', 'no corruption')
-        post_response = json.loads(post.data.decode())
-        self.assertTrue(post_response['status'], '400')
-        self.assertTrue(post_response['error_message'], 'Please an integer is needed here')
         self.assertFalse(post_response['data'])
         self.assertTrue(post.content_type, 'application/json')
         self.assertEqual(post.status_code, 400)
@@ -127,7 +127,24 @@ class TestEndpoints(TestCase):
             content_type='application/json'
         )
         response_data = json.loads(request_data.data.decode())
-        self.assertIn(response_data['message'], 'no record')
+        self.assertEqual(response_data['message'], 'no record')
+        self.assertEqual(request_data.status_code, 400)
+        self.assertTrue(request_data, dict)
+
+    def test_edit_location_absent(self):
+        self.create_record('books', 'okay', 4567, 'zero no corruption')
+        self.create_record('maj.masete', 'UPDF', 6758, 'stolen guns')
+
+        request_data = self.client().put(
+            '/api/v1/redflags/30/',
+            data=json.dumps(dict(
+                type=222,
+                payload="red_flag_location"
+            )),
+            content_type='application/json'
+        )
+        response_data = json.loads(request_data.data.decode())
+        self.assertEqual(response_data['message'], 'no record')
         self.assertEqual(request_data.status_code, 400)
         self.assertTrue(request_data, dict)
 
