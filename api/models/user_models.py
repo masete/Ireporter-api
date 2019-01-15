@@ -14,4 +14,5 @@ class UserAuth:
         self.phone_number = kwargs.get("phone_number")
         self.registered_on = kwargs.get("registered_on")
         self.is_admin = kwargs.get("is_admin")
+        self.password = kwargs.get("password")
 
