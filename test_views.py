@@ -10,6 +10,36 @@ class TestEndpoints(TestCase):
         self.app = APP
         self.client = self.app.test_client
 
+    def create_user(self, first_name, last_name, other_name, email, user_name, phone_number, password, is_admin):
+        post_user = self.client().post(
+            '/api/auth/user',
+            data=json.dumps(dict(
+                first_name=first_name,
+                last_name=last_name,
+                other_name=other_name,
+                email=email,
+                user_name=user_name,
+                phone_number=phone_number,
+                password=password,
+                is_admin=is_admin
+
+            )),
+            content_type='application/json'
+        )
+        return post_user
+
+    def test_register_user(self):
+        new_user = self.create_user('masete', 'nicholas', 'joel', 'masete@gmail.com', 'jkl', '0775406407', '7846', 'false')
+        response = json.loads(new_user.data.decode())
+        self.assertIn(response['massage'], 'user created successfully')
+        self.assertEqual(new_user.status_code, 201)
+
+    def test_wrong_email(self):
+        new_user = self.create_user('masete', 'nicholas', 'joel', 'masete_gmail.com', 'jkl', '0775406407', '7846', 'false')
+        response = json.loads(new_user.data.decode())
+        self.assertIn(response['error'], 'Please use a valid email address for example nich@gmail')
+        self.assertEqual(new_user.status_code, 400)
+
     def create_record(self, createdBy, red_flag_title, red_flag_location, red_flag_comment):
         post_data = self.client().post(
             '/api/v1/redflags/',
