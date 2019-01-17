@@ -8,8 +8,7 @@ auth = UserAuth()
 
 
 class UserView(MethodView):
-
-    def post(self):
+    def signup(self):
 
         data = request.get_json()
 
@@ -32,7 +31,7 @@ class UserView(MethodView):
         UserAuth.users.append(user)
         return jsonify({"massage": "user created successfully"}), 201
 
-    def post_user(self):
+    def login(self):
         data = request.get_json()
 
         email = data.get('email')
@@ -41,5 +40,6 @@ class UserView(MethodView):
         user = [u for u in auth.users if u.email == email]
         if not user:
             return jsonify({"message": "Please register to login"}), 401
+        return jsonify({"message": "logged in successfully"})
 
 

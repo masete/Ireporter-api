@@ -36,6 +36,9 @@ class RedFlagViews(MethodView):
         if not self.created_by or not self.flag_title or not self.flag_comment:
             return ErrorFeedback.empty_data_fields()
 
+        if self.flag_comment == self.models.redFlags:
+            return jsonify({"message": "record already exits"})
+
         red_flag_response = self.models.create_red_flag(self.created_by, self.flag_title, self.flag_location,
                                                         self.flag_comment)
         response_object = {
@@ -59,7 +62,7 @@ class RedFlagViews(MethodView):
         }
         return jsonify(response_object), 200
 
-    def delete(self, red_flag_id):
+    def delete_flag(self, red_flag_id):
         for flag in self.models.redFlags:
             if flag.red_flag_id == red_flag_id:
                 self.models.redFlags.remove(flag)
@@ -67,7 +70,7 @@ class RedFlagViews(MethodView):
                                                         }]}), 200
         return jsonify({"message": "no redflag to delete"}), 400
 
-    def put(self, red_flag_id):
+    def edit_flag(self, red_flag_id):
         single_record = [record.__dict__ for record in self.models.redFlags if
                          record.red_flag_id == red_flag_id]
         if single_record:
