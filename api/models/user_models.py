@@ -1,7 +1,13 @@
-from datetime import datetime
+"""
+my module containing user models
+"""
+from flask import jsonify
 
 
 class UserAuth:
+    """
+    my class containing my constructor
+    """
     users = []
 
     def __init__(self, **kwargs):
@@ -16,3 +22,15 @@ class UserAuth:
         self.is_admin = kwargs.get("is_admin")
         self.password = kwargs.get("password")
 
+    def check_user_credentials(self, email, password):
+        """
+        mythod to login user
+        :param email:
+        :param password:
+        :return:
+        """
+        for user in UserAuth.users:
+            if user['email'] == email:
+                if user['password'] == password:
+                    return True
+        return jsonify({"message": "wrong password or username"})

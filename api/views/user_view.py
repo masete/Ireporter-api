@@ -4,9 +4,11 @@ from api.models.user_models import UserAuth
 from api.Helpers.validators import validate_user_details
 
 
-class UserView(MethodView):
+auth = UserAuth()
 
-    def post(self):
+
+class UserView(MethodView):
+    def signup(self):
 
         data = request.get_json()
 
@@ -28,3 +30,16 @@ class UserView(MethodView):
                         email=email, phone_number=phone_number, is_admin=is_admin, password=password)
         UserAuth.users.append(user)
         return jsonify({"massage": "user created successfully"}), 201
+
+    def login(self):
+        data = request.get_json()
+
+        email = data.get('email')
+        password = data.get('password')
+
+        user = [u for u in auth.users if u.email == email]
+        if not user:
+            return jsonify({"message": "Please register to login"}), 401
+        return jsonify({"message": "logged in successfully"})
+
+
