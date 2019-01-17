@@ -2,28 +2,31 @@ from api.models.const.redflag_model import RedflagModel
 from flask import jsonify
 
 
-class Redflags:
+class RedFlags:
 
     index = 0
-    redflags = []
+    redFlags = []
 
-    def create_redflag(self, createdBy, red_flag_title, red_flag_location, red_flag_comment):
+    def create_red_flag(self, created_by, red_flag_title, red_flag_location, red_flag_comment):
         self.index += 1
-        redflag = RedflagModel(createdBy, red_flag_title, red_flag_location, red_flag_comment)
-        redflag.red_flag_id = self.index
-        self.redflags.append(redflag)
+        red_flag = RedflagModel(created_by, red_flag_title, red_flag_location, red_flag_comment)
+        red_flag.red_flag_id = self.index
+        self.redFlags.append(red_flag)
 
-        return redflag
+        return red_flag
 
-    # @classmethod
-    def get_all_redflags(cls):
-        return cls.redflags
+    def get_all_red_flags(self):
+        return self.redFlags
 
-    # @classmethod
-    def get_specific_redflag(cls, red_flag_id):
-        for redflag in cls.redflags:
-            if red_flag_id == redflag.red_flag_id:
-                return redflag
+    def get_specific_red_flag(self, red_flag_id):
+        for flag in self.redFlags:
+            if red_flag_id == flag.red_flag_id:
+                response_object = {
+                    'status': '200',
+                    'message': 'redflag exists',
+                    'data': flag.__dict__
+                            }
+                return jsonify(response_object), 200
         return None
 
 

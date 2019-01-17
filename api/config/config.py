@@ -1,19 +1,32 @@
 """
-App configurations
+Module for configuring server environment variables
 """
 
 
 class Config:
     """
-    This is the parent configurations to be inherited from
+    Default environment configuration
     """
-    DEBUG = False
+    TESTING = False
 
 
-class DevelopmentConfig(Config):
+class Development(Config):
     """
-    The configuration for the development environment
+    Development environment configuration
     """
     DEBUG = True
+    ENV = 'development'
 
 
+class Production(Config):
+    """
+    Production environment configuration
+    """
+    DEBUG = False
+    ENV = 'production'
+
+
+APP_CONFIG = {
+    'development': Development,
+    'production': Production,
+}

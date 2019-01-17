@@ -40,14 +40,14 @@ class TestEndpoints(TestCase):
         self.assertIn(response['error'], 'Please use a valid email address for example nich@gmail')
         self.assertEqual(new_user.status_code, 400)
 
-    def create_record(self, createdBy, red_flag_title, red_flag_location, red_flag_comment):
+    def create_record(self, created_by, flag_title, flag_location, flag_comment):
         post_data = self.client().post(
             '/api/v1/redflags/',
             data=json.dumps(dict(
-                createdBy=createdBy,
-                red_flag_title=red_flag_title,
-                red_flag_location=red_flag_location,
-                red_flag_comment=red_flag_comment
+                created_by=created_by,
+                flag_title=flag_title,
+                flag_location=flag_location,
+                flag_comment=flag_comment
             )),
             content_type='application/json'
         )
