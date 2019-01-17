@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 /venv
 /api/views/__pycache__/
 /api/models/const/__pycache__/
@@ -9,5 +10,9 @@
 /.pytest_cache
 /api/Helpers/__pycache__/
 /api/__init__.pyc
+/api/models/.pytest_cache/
 /.pytest_cache/tests/test_views.py
 /.idea/vcs.xml
+=======
+/venv
+>>>>>>> Stashed changes

@@ -7,8 +7,8 @@ from api.config.routes import Routes
 
 
 class Loader:
-    """ 
-    Create loader object to start server 
+    """
+    Create loader object to start server
     """
 
     def __init__(self):
