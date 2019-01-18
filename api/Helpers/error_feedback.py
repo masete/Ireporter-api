@@ -21,7 +21,7 @@ class ErrorFeedback:
     def invalid_data_type():
         response_object = {
             'status': '400',
-            'error_message': 'Please an integer is needed here',
+            'error_message': 'Please the longitude and latitudes are floats',
             'data': False
         }
         return jsonify(response_object), 400
@@ -30,7 +30,7 @@ class ErrorFeedback:
     def invalid_data_type_str():
         response_object = {
             'status': '400',
-            'error_message': 'Please a string is for redflag title and comment thanks',
+            'message': 'Please string type of data is needed for redflag title and comment thanks',
             'data': False
         }
         return jsonify(response_object), 400

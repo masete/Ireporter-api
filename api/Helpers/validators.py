@@ -10,15 +10,17 @@ def validate_user_details(first_name, last_name, other_name, user_name, email, p
             and phone_number == "" and password == "" and is_admin:
         return jsonify({"message": "fields cant be  empty"}), 400
 
-    # if first_name == " " and last_name == " " and other_name == " " and user_name == " " and email == " " \
-    #         and phone_number == " " and password == " " and is_admin:
-    #     return jsonify({"message": "fields cant be passed empty strings"}), 400
-
     valid_email = validate_email(email)
     if not valid_email:
         return jsonify({
             "error": "Please use a valid email address for example nich@gmail"
         }), 400
+
+    if not first_name.isalpha() or not last_name.isalpha():
+        return jsonify({
+            "error": "First and last name should only be alphabets"
+        }), 400
+
 
 
 

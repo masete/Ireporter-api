@@ -49,6 +49,6 @@ class RedFlags:
                 response_object = {
                     'status': '200',
                     'message': 'redflag exists',
-                    'data': flag.__dict__}
+                    'data': flag.to_json()}
                 return jsonify(response_object), 200
-        return None
+        return jsonify({"status": "404", "message": "that redflag does not exist"}), 404

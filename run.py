@@ -6,12 +6,15 @@ from api.config import config
 from api.config.routes import Routes
 
 
-class Loader:
+class Server:
     """
     Create loader object to start server
     """
 
     def __init__(self):
+        """
+        my init method, where am creating an instance of class Routes
+        """
         self.route = Routes()
 
     def create_app(self, env_name):
@@ -28,7 +31,7 @@ class Loader:
         return app
 
 
-app = Loader().create_app('development')
+app = Server().create_app('development')
 
 if __name__ == '__main__':
     app.run(port=2000)

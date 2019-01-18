@@ -83,8 +83,8 @@ class TestEndpoints(TestCase):
     def test_title_for_string(self):
         post = self.create_record('money', 8976, 6.4, 6.9, 'temangalo land')
         post_response = json.loads(post.data.decode())
-        self.assertEquals(post_response['status'], '400')
-        self.assertEquals(post_response['error_message'], 'Please a string is for redflag title and comment thanks')
+        # self.assertIn(post_response['status'], '400')
+        self.assertEqual(post_response['message'], 'Please string type of data is needed for redflag title and comment thanks')
         self.assertFalse(post_response['data'])
         self.assertTrue(post.content_type, 'application/json')
         self.assertEqual(post.status_code, 400)
@@ -93,7 +93,8 @@ class TestEndpoints(TestCase):
         post = self.create_record('money', "no no", 67.4, 9.0, 5633)
         post_response = json.loads(post.data.decode())
         self.assertEquals(post_response['status'], '400')
-        self.assertEquals(post_response['error_message'], 'Please a string is for redflag title and comment thanks')
+        self.assertEquals(post_response['message'], 'Please string type of data is needed for redflag '
+                                                    'title and comment thanks')
         self.assertFalse(post_response['data'])
         self.assertTrue(post.content_type, 'application/json')
         self.assertEqual(post.status_code, 400)
@@ -132,29 +133,28 @@ class TestEndpoints(TestCase):
         self.assertTrue(request_data, dict)
         self.assertEqual(request_data.status_code, 200)
 
-    # def test_get_redflag_not_existing(self):
-    #     self.create_record('books', 'okay', 45.8, 45.7, 'zero no corruption')
-    #     self.create_record('maj.masete', 'UPDF', 67.8, 43.2, 'stolen guns')
-    #
-    #     request_data = self.client().get('/api/v1/red-flags/1008/')
-    #
-    #     response_data = json.loads(request_data.data.decode())
-    #     self.assertIn(response_data['status'], '404')
-    #     self.assertIn(response_data['error_message'], 'redflag does not exist')
-    #     self.assertTrue(request_data, dict)
-    #     self.assertFalse(response_data['data'])
-    #     self.assertEqual(request_data.status_code, 400)
+    def test_get_redflag_not_existing(self):
+        self.create_record('books', 'okay', 45.8, 45.7, 'zero no corruption')
+        self.create_record('maj.masete', 'UPDF', 67.8, 43.2, 'stolen guns')
 
-    # def test_edit_comment_absent(self):
-    #     self.create_record('books', 'okay', 45.7, 67.3, 'zero no corruption')
-    #     self.create_record('maj.masete', 'UPDF', 67.8, 46.4, 'stolen guns')
-    #
-    #     request_data = self.client().put(
-    #         '/api/v1/red-flags/30/')
-    #     response_data = json.loads(request_data.data.decode())
-    #     self.assertIn(response_data['message'], 'no record')
-    #     self.assertEqual(request_data.status_code, 400)
-    #     self.assertTrue(request_data, dict)
+        request_data = self.client().get('/api/v1/red-flags/1008/')
+
+        response_data = json.loads(request_data.data.decode())
+        self.assertIn(response_data['status'], '404')
+        self.assertIn(response_data['message'], 'that redflag does not exist')
+        self.assertTrue(request_data, dict)
+        self.assertEqual(request_data.status_code, 404)
+
+    def test_edit_comment_absent(self):
+        self.create_record('books', 'okay', 45.7, 67.3, 'zero no corruption')
+        self.create_record('maj.masete', 'UPDF', 67.8, 46.4, 'stolen guns')
+
+        request_data = self.client().put(
+            '/api/v1/red-flags/30/')
+        response_data = json.loads(request_data.data.decode())
+        self.assertIn(response_data['message'], 'there is no redflag with that id')
+        self.assertEqual(request_data.status_code, 400)
+        self.assertTrue(request_data, dict)
 
     def test_delete_data(self):
         self.create_record('books', 'okay', 45.7, 56.3, 'zero no corruption')

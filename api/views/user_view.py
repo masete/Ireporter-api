@@ -1,13 +1,20 @@
+"""
+My module for user authentication routes
+"""
 from flask import request, jsonify
 from flask.views import MethodView
 from api.models.user_models import UserAuth
 from api.Helpers.validators import validate_user_details
+import datetime
+import jwt
 
-
-auth = UserAuth()
+AUTH = UserAuth()
 
 
 class UserView(MethodView):
+    """
+    my login and signup methods
+    """
     def signup(self):
 
         data = request.get_json()
@@ -28,18 +35,20 @@ class UserView(MethodView):
 
         user = UserAuth(first_name=first_name, last_name=last_name, other_names=other_name, user_name=user_name,
                         email=email, phone_number=phone_number, is_admin=is_admin, password=password)
-        UserAuth.users.append(user)
+        UserAuth.users.append(user.to_json1())
         return jsonify({"massage": "user created successfully"}), 201
 
     def login(self):
+        """
+        my login method
+        :return:
+        """
         data = request.get_json()
+        if isinstance(AUTH.check_user_credentials(data['email'], data['password']), bool):
+            tk = jwt.encode({
+                'email': data['email'],
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=20)
+            }, 'masete_nicholas_scretekey')
+            return jsonify({"message": "you are now logged in", 'token': tk.decode('UTF-8')}), 200
 
-        email = data.get('email')
-        password = data.get('password')
-
-        user = [u for u in auth.users if u.email == email]
-        if not user:
-            return jsonify({"message": "Please register to login"}), 401
-        return jsonify({"message": "logged in successfully"})
-
-
+        return jsonify({"message": "wrong password or email"})
