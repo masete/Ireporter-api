@@ -3,7 +3,11 @@ non persistent
 
 # Badges
 
+<<<<<<< HEAD
 [![Build Status](https://travis-ci.org/masete/Ireporter-api.svg?branch=develop)](https://travis-ci.org/masete/Ireporter-api)  [![Maintainability](https://api.codeclimate.com/v1/badges/145fb1609a0dd36ba71a/maintainability)](https://codeclimate.com/github/masete/Ireporter-api/maintainability)   [![Coverage Status](https://coveralls.io/repos/github/masete/Ireporter-api/badge.svg?branch=feature)](https://coveralls.io/github/masete/Ireporter-api?branch=feature)
+=======
+[![Build Status](https://travis-ci.org/masete/Ireporter-api.svg?branch=develop)](https://travis-ci.org/masete/Ireporter-api) [![Maintainability](https://api.codeclimate.com/v1/badges/145fb1609a0dd36ba71a/maintainability)](https://codeclimate.com/github/masete/Ireporter-api/maintainability)   [![Coverage Status](https://coveralls.io/repos/github/masete/Ireporter-api/badge.svg?branch=feature)](https://coveralls.io/github/masete/Ireporter-api?branch=feature)
+>>>>>>> 698ff605117103f58a3cab352b0d871fec4b6f02
 
 
 
