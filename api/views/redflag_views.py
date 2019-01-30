@@ -4,8 +4,8 @@ module containing my redflag views
 from flask import request, jsonify
 from flask.views import MethodView
 from api.models.redflags import RedFlags
-# from api.models.const import Red
 from api.Helpers.error_feedback import ErrorFeedback
+from api.Helpers.validators import validate_create_red_flag
 import jwt
 from functools import wraps
 
@@ -36,12 +36,6 @@ class RedFlagViews(MethodView):
     my class with instance variables
     """
     models = RedFlags()
-    created_by = None
-    flag_title = None
-    flag_latitude = None
-    flag_longitude = None
-    flag_comment = None
-    flag_type = None
 
     def create_flag(self):
         """
@@ -54,29 +48,20 @@ class RedFlagViews(MethodView):
         if not set(keys).issubset(set(request.json)):
             return ErrorFeedback.missing_key(keys)
 
-        self.created_by = data.get("created_by")
-        self.flag_title = data.get("flag_title")
-        self.flag_latitude = data.get('flag_latitude')
-        self.flag_longitude = data.get('flag_longitude')
-        self.flag_comment = data.get('flag_comment')
+        created_by = data.get("created_by")
+        flag_title = data.get("flag_title")
+        flag_latitude = data.get('flag_latitude')
+        flag_longitude = data.get('flag_longitude')
+        flag_comment = data.get('flag_comment')
 
-        if not(isinstance(request.json['flag_latitude'], float) and isinstance(request.json['flag_longitude'], float)):
-            return ErrorFeedback.invalid_data_type()
+        red_flag_response = self.models.create_red_flag(created_by=created_by, flag_title=flag_title,
+                                                        flag_latitude=flag_latitude,
+                                                        flag_longitude=flag_longitude, flag_comment=flag_comment)
 
-        if not isinstance(request.json['flag_title'], str):
-            return ErrorFeedback.invalid_data_type_str()
-        if not isinstance(request.json['flag_comment'], str):
-            return ErrorFeedback.invalid_data_type_str()
+        val = validate_create_red_flag(created_by, flag_title, flag_comment)
+        if val:
+            return val
 
-        if not self.created_by or not self.flag_title or not self.flag_comment:
-            return ErrorFeedback.empty_data_fields()
-        #
-        # for flag in self.models.redFlags:
-        #     if flag.flag_comment == self.flag_comment:
-        #         return jsonify({"message": "record already exits"})
-
-        red_flag_response = self.models.create_red_flag(self.created_by, self.flag_title, self.flag_latitude,
-                                                        self.flag_longitude, self.flag_comment)
         response_object = {
             'status': '201',
             'message': 'Redflag has been created',
@@ -109,12 +94,8 @@ class RedFlagViews(MethodView):
         :param flag_id:
         :return:
         """
-        for flag in self.models.redFlags:
-            if flag['flag_id'] == flag_id:
-                self.models.redFlags.remove(flag)
-                return jsonify({"status": 200, "data": [{"id": flag_id, "message": "redflag record has been deleted"
-                                                         }]}), 200
-        return jsonify({"message": "no redflag to delete"}), 400
+        deleted = self.models.delete_red_flag(flag_id)
+        return deleted
 
     def edit_flag(self, flag_id):
         """

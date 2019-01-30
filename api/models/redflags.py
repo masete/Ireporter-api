@@ -3,7 +3,6 @@ my module containing my redflag models
 """
 from flask import jsonify
 from datetime import datetime
-# from api.models.const.redflag_model import RedFlagModel
 
 
 class RedFlags:
@@ -72,3 +71,13 @@ class RedFlags:
                     'data': flag}
                 return jsonify(response_object), 200
         return jsonify({"status": "404", "message": "that redflag does not exist"}), 404
+
+    def delete_red_flag(self, flag_id):
+
+        for flag in self.redFlags:
+            if flag['flag_id'] == flag_id:
+                self.redFlags.remove(flag)
+                return jsonify({"status": 200, "data": [{"id": flag_id, "message": "redflag record has been deleted"
+                                                         }]}), 200
+        return jsonify({"message": "no redflag to delete"}), 400
+
