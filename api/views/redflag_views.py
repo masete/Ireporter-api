@@ -4,6 +4,7 @@ module containing my redflag views
 from flask import request, jsonify
 from flask.views import MethodView
 from api.models.redflags import RedFlags
+# from api.models.const import Red
 from api.Helpers.error_feedback import ErrorFeedback
 import jwt
 from functools import wraps
@@ -69,10 +70,10 @@ class RedFlagViews(MethodView):
 
         if not self.created_by or not self.flag_title or not self.flag_comment:
             return ErrorFeedback.empty_data_fields()
-
-        for flag in self.models.redFlags:
-            if flag.flag_comment == self.flag_comment:
-                return jsonify({"message": "record already exits"})
+        #
+        # for flag in self.models.redFlags:
+        #     if flag.flag_comment == self.flag_comment:
+        #         return jsonify({"message": "record already exits"})
 
         red_flag_response = self.models.create_red_flag(self.created_by, self.flag_title, self.flag_latitude,
                                                         self.flag_longitude, self.flag_comment)
@@ -94,7 +95,7 @@ class RedFlagViews(MethodView):
         elif flag_id:
             return self.models.get_specific_red_flag(flag_id)
 
-        flag_response = [flag.to_json() for flag in self.models.get_all_red_flags()]
+        flag_response = self.models.get_all_red_flags()
 
         response_object = {
             'status': '200',
@@ -109,7 +110,7 @@ class RedFlagViews(MethodView):
         :return:
         """
         for flag in self.models.redFlags:
-            if flag.flag_id == flag_id:
+            if flag['flag_id'] == flag_id:
                 self.models.redFlags.remove(flag)
                 return jsonify({"status": 200, "data": [{"id": flag_id, "message": "redflag record has been deleted"
                                                          }]}), 200
@@ -121,13 +122,13 @@ class RedFlagViews(MethodView):
         :param flag_id:
         :return:
         """
-        single_record = [record.__dict__ for record in self.models.redFlags if
-                         record.flag_id == flag_id]
+        single_record = [record for record in self.models.redFlags if
+                         record['flag_id'] == flag_id]
         if single_record:
             data = request.get_json()
 
             single_record[0]['created_by'] = data.get('created_by', single_record[0]['created_by'])
-            single_record[0]['flag_title'] = data.get("flag_title", single_record[0]['flag_title'])
+            single_record[0]['flag_title'] = data.get('flag_title', single_record[0]['flag_title'])
             single_record[0]['flag_latitude'] = data.get('flag_latitude', single_record[0]['flag_latitude'])
             single_record[0]['flag_longitude'] = data.get('flag_longitude', single_record[0]['flag_longitude'])
             single_record[0]['flag_comment'] = data.get('flag_comment', single_record[0]['flag_comment'])
