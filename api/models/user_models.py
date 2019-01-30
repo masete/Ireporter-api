@@ -2,6 +2,7 @@
 my module containing user models
 """
 from flask import jsonify
+from _datetime import datetime
 
 
 class UserAuth:
@@ -11,14 +12,14 @@ class UserAuth:
     users = []
 
     def __init__(self, **kwargs):
-        self.user_id = kwargs.get("user_id")
+        self.user_id = len(self.users) + 1
         self.first_name = kwargs.get("first_name")
         self.last_name = kwargs.get("last_name")
         self.other_names = kwargs.get("other_names")
         self.user_name = kwargs.get("user_name")
         self.email = kwargs.get("email")
         self.phone_number = kwargs.get("phone_number")
-        self.registered_on = kwargs.get("registered_on")
+        self.registered_on = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.is_admin = kwargs.get("is_admin")
         self.password = kwargs.get("password")
 
@@ -44,7 +45,7 @@ class UserAuth:
         :param password:
         :return:
         """
-        for user in UserAuth.users:
+        for user in self.users:
             if user['email'] == email:
                 if user['password'] == password:
                     return True

@@ -6,29 +6,7 @@ from flask.views import MethodView
 from api.models.redflags import RedFlags
 from api.Helpers.error_feedback import ErrorFeedback
 from api.Helpers.validators import validate_create_red_flag
-import jwt
-from functools import wraps
-
-
-def token_req(end_point):
-    """
-    JWT method to get token from headers
-    :param end_point:
-    :return:
-    """
-    @wraps(end_point)
-    def check(*args, **kwargs):
-        if 'token' in request.headers:
-            tk = request.headers['token']
-        else:
-            return jsonify({'message': 'you should login'})
-        try:
-            jwt.decode(tk, 'masete_nicholas_scretekey')
-        except:
-            return jsonify({'message': 'user not authenticated'})
-        return end_point(*args, **kwargs)
-
-    return check
+from api.Helpers.jwt_auth import get_current_identity, get_current_role
 
 
 class RedFlagViews(MethodView):

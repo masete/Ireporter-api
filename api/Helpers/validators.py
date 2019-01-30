@@ -44,10 +44,7 @@ def validate_create_red_flag(created_by, flag_title, flag_comment):
     if not created_by or not flag_title or not flag_comment:
         return ErrorFeedback.empty_data_fields()
 
-    # exists = [flag for flag in models.redFlags if flag['flag_comment'] == flag_comment]
-    # if exists:
-    #     return jsonify({"message": "record already exits"})
-    #
+
 
 
 
